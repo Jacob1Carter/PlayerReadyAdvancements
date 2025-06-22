@@ -1,0 +1,50 @@
+<!-- admin/database.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin Home</a>
+            <h2>Database Management</h2>
+
+            <form method="POST" action="/admin/database" class="db-form">
+                <label for="action">Select Action:</label>
+                <input name="query" type="text" value="{{query}}" required>
+
+                <button type="submit">Execute</button>
+            </form>
+
+            {% if error != None %}
+                <p class="error">{{ error }}</p>
+            {% else %}
+
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            {% if column_names %}
+                                {% for name in column_names %}
+                                    <th>{{ name }}</th>
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                            <tr>
+                                {% for item in row %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            {% endif %}
+        </div>
+
+    </body>
+</html>
+
+<!-- /admin/database.html -->

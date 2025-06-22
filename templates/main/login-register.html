@@ -1,0 +1,39 @@
+<!-- main/main.html -->
+
+<html lang="en-gb">
+    {% include "base/header.html" %}
+
+    <body>
+        {% include "base/navbar.html" %}
+
+        <div class="content">
+            <h2>{% if mode == "login" %}Login{% else %}Register{% endif %}</h2>
+            
+            {% if NotFound %}
+                <p class="error">User not found. Try again or <a href="/register">register</a>.</p>
+            {% endif %}
+            
+            <form method="POST" action="/{{ mode }}-input">
+            
+                <input type="text" name="first" placeholder="First Name" required>
+                <input type="text" name="last" placeholder="Last Name" required>
+
+                <button type="submit">Submit</button>
+
+                <p>
+                    {% if mode == "login" %}
+                        Don't have an account? <a href="/register">Register</a>
+                    {% else %}
+                        Already have an account? <a href="/login">Login</a>
+                    {% endif %}
+                </p>
+            </form>
+        
+        </div>
+
+    </body>
+    
+    {% include "base/footer.html" %}
+</html>
+
+<!-- /main/main.html -->

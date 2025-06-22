@@ -1,0 +1,1 @@
+in static, images/items folder contains ONLY images that are 16x16 pixels, images/blocks folder contains ONLY 64x64 pixels, misc contains everything else
