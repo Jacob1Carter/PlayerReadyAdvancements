@@ -11,8 +11,8 @@ app = Flask(__name__)
 @app.before_request
 def construct_db():
     # check that db exists
-    if not os.path.exists("database.db"):
-        with open("database.db", "w") as db_file:
+    if not os.path.exists("data/database.db"):
+        with open("data/database.db", "w") as db_file:
             pass  # Create an empty database file
     # check users and advancements tables exist, if not create them
     conn = sqlite3.connect("database.db")
