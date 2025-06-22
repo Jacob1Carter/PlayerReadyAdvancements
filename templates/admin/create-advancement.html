@@ -1,0 +1,87 @@
+<!-- admin/create-advancements.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin home</a>
+            <br>
+            <h3>Create advancement</h3>
+
+            <form action="/admin/advancements/new" method="post">
+                <input type="text" name="name" placeholder="Advancement Name" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <select name="image-type" id="image-type" required>
+                    <option value="" disabled selected>Please select an option...</option>
+                    <option value="item">item</option>
+                    <option value="block">block</option>
+                </select>
+                <select name="item-image-name" id="item-image-name" disabled>
+                    <option value="" disabled selected>Select an item...</option>
+                    {% for item in item_images %}
+                        <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="block-image-name" id="block-image-name" disabled>
+                    <option value="" disabled selected>Select a block...</option>
+                    {% for block in block_images %}
+                        <option value="{{ block }}">{{ block }}</option>
+                    {% endfor %}
+                </select>
+                <img id="image-preview" src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="Block preview" style="width: 64px; height:64px;">
+
+                <button type="submit">Add Advancement</button>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('image-type').addEventListener('change', function() {
+                const itemSelect = document.getElementById('item-image-name');
+                const blockSelect = document.getElementById('block-image-name');
+                const imagePreview = document.getElementById('image-preview');
+                
+                if (this.value === 'item') {
+                    itemSelect.disabled = false;
+                    itemSelect.required = true;
+                    blockSelect.disabled = true;
+                    blockSelect.required = false;
+                    blockSelect.value = '';
+                    imagePreview.src = '/static/images/misc/preview_placeholder.png';
+                } else if (this.value === 'block') {
+                    blockSelect.disabled = false;
+                    blockSelect.required = true;
+                    itemSelect.disabled = true;
+                    itemSelect.required = false;
+                    itemSelect.value = '';
+                    imagePreview.src = '/static/images/misc/preview_placeholder.png';
+                }
+            });
+
+            document.getElementById('item-image-name').addEventListener('change', function() {
+                const preview = document.getElementById('image-preview');
+                if (this.value) {
+                    preview.src = '/static/images/items/' + this.value;
+                } else {
+                    preview.src = '/static/images/misc/preview_placeholder.png';
+                }
+            });
+
+            document.getElementById('block-image-name').addEventListener('change', function() {
+                const preview = document.getElementById('image-preview');
+                if (this.value) {
+                    preview.src = '/static/images/blocks/' + this.value;
+                    preview.style.display = 'inline';
+                } else {
+                    preview.src = '/static/images/misc/preview_placeholder.png';
+                    preview.style.display = 'none';
+                }
+            });
+        </script>
+
+    </body>
+</html>
+
+<!-- /admin/create-advancements.html -->

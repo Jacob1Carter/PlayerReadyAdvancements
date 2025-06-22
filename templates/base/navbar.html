@@ -3,7 +3,9 @@
 <nav class="navbar">
     <ul>
         <li class="nav-item nav-l"><a href="/">Home</a></li>
-        <li class="nav-item nav-r"><a href="/admin">Admin</a></li>
+        {% if True %}
+            <li class="nav-item nav-r"><a href="/admin" class="red-text">Admin</a></li>
+        {% endif %}
         <li class="nav-item nav-r"><a href="/login">Login</a></li>
         <li class="nav-item nav-r"><a href="/register">Register</a></li>
     </ul>

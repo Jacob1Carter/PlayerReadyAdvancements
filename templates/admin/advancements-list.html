@@ -1,0 +1,52 @@
+<!-- admin/advancements-list.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin home</a>
+            <br>
+            <h3>All advancements</h3>
+
+            {% if error != None %}
+                <p class="error">{{ error }}</p>
+            {% else %}
+                <table class="db-table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Image name</th>
+                        <th>Image</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for advancement in advancements %}
+                        <tr>
+                            <td>{{ advancement.name }}</td>
+                            <td>{{ advancement.description }}</td>
+                            <td>{{ advancement.image }}</td>
+                            <td>
+                                {% if advancement.image %}
+                                    <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" style="width: 64px; height: 64px;">
+                                {% else %}
+                                    No image
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="/admin/advancements/edit/{{ advancement.id }}">Edit</a>
+                            </td>
+                            <td>
+                                <form action="/admin/advancements/delete/{{ advancement.id }}" method="POST">
+                                    <input type="submit" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+    </body>
+</html>
+
+<!-- /admin/advancements-list.html -->

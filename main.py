@@ -27,7 +27,7 @@ def construct_db():
         "CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, user_md5 TEXT)"
     )
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS ADVANCEMENTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT, unlocks TEXT)"
+        "CREATE TABLE IF NOT EXISTS ADVANCEMENTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT)"
     )
     conn.commit()
     conn.close()
@@ -166,8 +166,16 @@ def database_inline():
 
 @app.route("/admin/advancements", methods=["GET"])
 def advancements_admin():
+    return render_template("admin/advancements.html")
+
+
+@app.route("/admin/advancements/list", methods=["GET"])
+def advancements_list():
     # get advancements from database
-    error = None
+    if request.args.get("error"):
+        error = request.args.get("error")
+    else:
+        error = None
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
@@ -179,14 +187,77 @@ def advancements_admin():
     
     if not advancements:
         error = "No advancements found."
-    else:
-        advancements.unlocks = [advancement["unlocks"].split(",") for advancement in advancements]
-    
+    return render_template("/admin/advancements-list.html", advancements=advancements, error=error)
+
+
+@app.route("/admin/advancements/layout", methods=["GET"])
+def advancements_layout():
+    return render_template("admin/advancements-layout.html")
+
+
+@app.route("/admin/advancements/create", methods=["GET"])
+def create_advancement():
     # get all image names from static/images/item and static/images/block directories
     item_images = os.listdir("static/images/items")
     block_images = os.listdir("static/images/blocks")
 
-    return render_template("admin/advancements.html", advancements=advancements, error=error, item_images=item_images, block_images=block_images)
+    return render_template("admin/create-advancement.html", item_images=item_images, block_images=block_images)
+
+
+@app.route("/admin/advancements/edit/<int:advancement_id>", methods=["GET"])
+def edit_advancement(advancement_id):
+    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+
+
+@app.route("/admin/advancements/edit/<int:advancement_id>/submit", methods=["POST"])
+def edit_advancement_submit(advancement_id):
+    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+
+
+@app.route("/admin/advancements/delete/<int:advancement_id>", methods=["POST"])
+def delete_advancement(advancement_id):
+    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+
+
+@app.route("/admin/advancements/new", methods=["POST"])
+def add_advancement():
+    name = request.form.get("name")
+    description = request.form.get("description")
+    item_image = request.form.get("item-image-name")
+    block_image = request.form.get("block-image-name")
+    image = "items/" + item_image if item_image else "blocks/" + block_image
+    if not name or not description or not image:
+        return redirect("/admin/advancements?error=All fields are required.")
+
+    # Insert new advancement into database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO ADVANCEMENTS (name, description, image) VALUES (?, ?, ?)",
+            (name, description, image)
+        )
+        conn.commit()
+    except sqlite3.Error as e:
+        conn.close()
+        return redirect(f"/admin/advancements?error=Error adding advancement: {e}")
+
+    conn.close()
+    return redirect("/admin/advancements")
+
+
+# add advancement
+
+
+@app.route("/admin/RESET", methods=["GET"])
+def reset_advancements():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DROP TABLE IF EXISTS USERS")
+    cursor.execute("DROP TABLE IF EXISTS ADVANCEMENTS")
+    conn.commit()
+    conn.close()
+    return redirect("/admin")
 
 
 if __name__ == "__main__":
