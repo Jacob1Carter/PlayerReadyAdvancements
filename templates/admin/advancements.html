@@ -1,0 +1,110 @@
+<!-- admin/advancements.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin home</a>
+            <br>
+            <h3>Advancements</h3>
+
+            {% if error != None %}
+                <p class="error">{{ error }}</p>
+            {% else %}
+                {% for advancement in advancements %}
+                    <div class="advancement">
+                        <h4>{{ advancement.name }}</h4>
+                        <p>{{ advancement.description }}</p>
+                        {% if advancement.image %}
+                            <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" />
+                        {% endif %}
+                        <p>Unlocks:</p>
+                        <ul>
+                            {% for unlock in advancement.unlocks %}
+                                <li>{{ unlock }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <form action="/admin/advancements/new" method="post">
+            <input type="text" name="name" placeholder="Advancement Name" required>
+            <input type="text" name="description" placeholder="Description" required>
+            <select name="image-type" id="image-type" required>
+                <option value="" disabled selected>Please select an option...</option>
+                <option value="item">item</option>
+                <option value="block">block</option>
+            </select>
+            <select name="item-image-name" id="item-image-name" disabled>
+                <option value="" disabled selected>Select an item...</option>
+                {% for item in item_images %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <img id="item-preview" src="" alt="Item preview" style="display:none; width:32px; height:32px;">
+
+            <select name="block-image-name" id="block-image-name" disabled>
+                <option value="" disabled selected>Select a block...</option>
+                {% for block in block_images %}
+                    <option value="{{ block }}">{{ block }}</option>
+                {% endfor %}
+            </select>
+            <img id="block-preview" src="" alt="Block preview" style="display:none; width:32px; height:32px;">
+
+            <input type="text" name="unlocks" placeholder="Unlocks (integers, comma-separated)">
+            <button type="submit">Add Advancement</button>
+        </form>
+
+        <script>
+            document.getElementById('image-type').addEventListener('change', function() {
+                const itemSelect = document.getElementById('item-image-name');
+                const blockSelect = document.getElementById('block-image-name');
+                const itemPreview = document.getElementById('item-preview');
+                const blockPreview = document.getElementById('block-preview');
+                
+                if (this.value === 'item') {
+                    itemSelect.disabled = false;
+                    itemSelect.required = true;
+                    blockSelect.disabled = true;
+                    blockSelect.required = false;
+                    blockSelect.value = '';
+                    blockPreview.style.display = 'none';
+                } else if (this.value === 'block') {
+                    blockSelect.disabled = false;
+                    blockSelect.required = true;
+                    itemSelect.disabled = true;
+                    itemSelect.required = false;
+                    itemSelect.value = '';
+                    itemPreview.style.display = 'none';
+                }
+            });
+
+            document.getElementById('item-image-name').addEventListener('change', function() {
+                const preview = document.getElementById('item-preview');
+                if (this.value) {
+                    preview.src = '/static/images/items/' + this.value;
+                    preview.style.display = 'inline';
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+
+            document.getElementById('block-image-name').addEventListener('change', function() {
+                const preview = document.getElementById('block-preview');
+                if (this.value) {
+                    preview.src = '/static/images/blocks/' + this.value;
+                    preview.style.display = 'inline';
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+        </script>
+
+    </body>
+</html>
+
+<!-- /admin/advancements.html -->

@@ -27,7 +27,7 @@ def construct_db():
         "CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, user_md5 TEXT)"
     )
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS ADVANCEMENTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)"
+        "CREATE TABLE IF NOT EXISTS ADVANCEMENTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT, unlocks TEXT)"
     )
     conn.commit()
     conn.close()
@@ -163,6 +163,30 @@ def database_inline():
         conn.close()
 
     return render_template("admin/database.html", query=query, data=data, error=error, column_names=column_names)
+
+@app.route("/admin/advancements", methods=["GET"])
+def advancements_admin():
+    # get advancements from database
+    error = None
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM ADVANCEMENTS ORDER BY ID")
+        advancements = cursor.fetchall()
+    except sqlite3.Error as error:
+        advancements = []
+    conn.close()
+    
+    if not advancements:
+        error = "No advancements found."
+    else:
+        advancements.unlocks = [advancement["unlocks"].split(",") for advancement in advancements]
+    
+    # get all image names from static/images/item and static/images/block directories
+    item_images = os.listdir("static/images/items")
+    block_images = os.listdir("static/images/blocks")
+
+    return render_template("admin/advancements.html", advancements=advancements, error=error, item_images=item_images, block_images=block_images)
 
 
 if __name__ == "__main__":
