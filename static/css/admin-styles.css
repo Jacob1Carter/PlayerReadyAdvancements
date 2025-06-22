@@ -1,5 +1,38 @@
 /* admin-styles.css */
 
+/* General styles */
+
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 8;
+    padding-top: 10px;
+
+    padding-top: 80px; /* ONLY TO MAKE SPACE FOR DISCLAIMER */
+}
+
+/* Discaimer */
+
+.disclaimer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 20px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    text-align: center;
+    font-family: arial;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* database form */
+
 .db-form {
     margin: 20px 20px 80px auto;
     padding: 20px;
@@ -15,6 +48,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+/* database table */
 
 .db-table {
     width: 100%;

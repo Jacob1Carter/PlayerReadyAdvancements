@@ -1,12 +1,14 @@
 <!-- base/navbar.html -->
 
-<nav>
+<nav class="navbar">
     <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/admin">Admin</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
+        <li class="nav-item nav-l"><a href="/">Home</a></li>
+        <li class="nav-item nav-r"><a href="/admin">Admin</a></li>
+        <li class="nav-item nav-r"><a href="/login">Login</a></li>
+        <li class="nav-item nav-r"><a href="/register">Register</a></li>
     </ul>
 </nav>
+
+{% include "base/disclaimer.html" %}
 
 <!-- /base/navbar.html -->

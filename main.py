@@ -7,6 +7,12 @@ import os
 app = Flask(__name__)
 
 
+def get_db_connection():
+    conn = sqlite3.connect("data/database.db")
+    conn.row_factory = sqlite3.Row  # Enable row factory for dict-like access
+    return conn
+
+
 # database setup
 @app.before_request
 def construct_db():
@@ -15,7 +21,7 @@ def construct_db():
         with open("data/database.db", "w") as db_file:
             pass  # Create an empty database file
     # check users and advancements tables exist, if not create them
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, user_md5 TEXT)"
@@ -41,12 +47,12 @@ def admin_required(f):
 
 @app.route("/", methods=["GET"])
 def main():
-    return render_template("main/main.html")
+    return render_template("main/main.html", title="Home - Player Ready Advancements")
 
 
 @app.route("/register", methods=["GET"])
 def register():
-    return render_template("main/login-register.html", mode="register")
+    return render_template("main/login-register.html", title="Register - Player Ready Advancements", mode="register")
 
 
 @app.route("/register-input", methods=["POST"])
@@ -56,7 +62,7 @@ def register_input():
     prep_md5 = first.strip().lower() + last.strip().lower()
     user_md5 = prep_md5.encode("utf-8").hex()
     # Insert user into database
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("INSERT INTO USERS (name, user_md5) VALUES (?, ?)", (first, user_md5))
     conn.commit()
@@ -69,7 +75,7 @@ def register_input():
 def login():
     # Check if there is a NotFound query parameter
     NotFound = True if request.args.get("NotFound") is not None else False
-    return render_template("main/login-register.html", mode="login", NotFound=NotFound)
+    return render_template("main/login-register.html", title="Login - Player Ready Advancements", mode="login", NotFound=NotFound)
 
 
 @app.route("/login-input", methods=["POST"])
@@ -79,7 +85,7 @@ def login_input():
     prep_md5 = first.strip().lower() + last.strip().lower()
     user_md5 = prep_md5.encode("utf-8").hex()
     # Check if user exists in database
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
 
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM USERS WHERE user_md5 = ?", (user_md5,))
@@ -95,7 +101,17 @@ def login_input():
 
 @app.route("/advancements/<user_md5>", methods=["GET"])
 def advancements(user_md5):
-    return render_template("main/advancements.html")
+    # Find user's name from database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM USERS WHERE user_md5 = ?", (user_md5,))
+    user = cursor.fetchone()
+    conn.close()
+    if not user:
+        # User not found, redirect to login with NotFound
+        return redirect("/login?NotFound")
+    user_name = user["name"]
+    return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", user_name=user_name)
 
 
 # admin routes
@@ -118,7 +134,7 @@ def database_inline():
         query = request.form.get("query")
     
     # execute query, get data
-    conn = sqlite3.connect("database.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute(query)
