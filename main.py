@@ -215,19 +215,126 @@ def create_advancement():
     return render_template("admin/create-advancement.html", item_images=item_images, block_images=block_images)
 
 
+@app.route("/admin/assets", methods=["GET"])
+def advancements_assets():
+    error = request.args.get("error")
+    if not error:
+        error = None
+    
+    # get all asset names from static/images/items and static/images/blocks directories
+    item_assets = os.listdir("static/images/items")
+    block_assets = os.listdir("static/images/blocks")
+
+    return render_template("admin/assets.html", error=error, item_assets=item_assets, block_assets=block_assets)
+
+
 @app.route("/admin/advancements/edit/<int:advancement_id>", methods=["GET"])
 def edit_advancement(advancement_id):
-    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+    error = request.args.get("error")
+    if not error:
+        error = None
+    # get advancement from database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM ADVANCEMENTS WHERE ID = ?", (advancement_id,))
+        advancement = cursor.fetchone()
+        if not advancement:
+            error = "Advancement not found."
+    except sqlite3.Error as e:
+        error = e
+    
+    conn.close()
+    
+    # get all image names from static/images/item and static/images/block directories
+    item_images = os.listdir("static/images/items")
+    block_images = os.listdir("static/images/blocks")
+
+    image_type = advancement["image"].split("/")[0] if advancement else None
+    image_name = advancement["image"].split("/")[1] if advancement else None
+
+    print(f"Advancement ID: {advancement_id}, Image Type: {image_type}, Image Name: {image_name}")
+
+    return render_template("admin/edit-advancement.html", advancement=advancement, error=error, image_type=image_type, image_name=image_name, item_images=item_images, block_images=block_images)
+
+
+@app.route("/admin/assets/upload", methods=["POST"])
+def upload_asset():
+    error = None
+    item_image = request.files.get("item-image")
+    block_image = request.files.get("block-image")
+    
+    if not item_image and not block_image:
+        error = "No files uploaded."
+    
+    if item_image:
+        item_image.save(os.path.join("static/images/items", item_image.filename))
+    
+    if block_image:
+        block_image.save(os.path.join("static/images/blocks", block_image.filename))
+    
+    if error:
+        return redirect(f"/admin/assets?error={error}")
+    return redirect("/admin/assets")
 
 
 @app.route("/admin/advancements/edit/<int:advancement_id>/submit", methods=["POST"])
 def edit_advancement_submit(advancement_id):
-    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+    error = None
+
+    name = request.form.get("name")
+    description = request.form.get("description")
+    item_image = request.form.get("item-image-name")
+    block_image = request.form.get("block-image-name")
+    image = "items/" + item_image if item_image else "blocks/" + block_image
+    if not name or not description or not image:
+        error = f"/admin/advancements/edit/{advancement_id}?error=All fields are required."
+    else:
+        # Update advancement in database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                "UPDATE ADVANCEMENTS SET name = ?, description = ?, image = ? WHERE ID = ?",
+                (name, description, image, advancement_id)
+            )
+            conn.commit()
+        except sqlite3.Error as e:
+            error = f"/admin/advancements/edit/{advancement_id}?error=Error updating advancement: {e}"
+        finally:
+            conn.close()
+    if error:
+        return redirect(f"/admin/advancements/edit/{advancement_id}?error={error}")
+    return redirect(f"/admin/advancements/list")
 
 
 @app.route("/admin/advancements/delete/<int:advancement_id>", methods=["POST"])
 def delete_advancement(advancement_id):
-    return redirect(f"/admin/advancements/list?error=This feature is not implemented yet.")
+    # Delete advancement from database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM ADVANCEMENTS WHERE ID = ?", (advancement_id,))
+        conn.commit()
+    except sqlite3.Error as e:
+        conn.close()
+        return redirect(f"/admin/advancements/list?error=Error deleting advancement: {e}")
+    return redirect(f"/admin/advancements/list")
+
+
+@app.route("/admin/assets/delete/<string:asset_type>/<string:asset_name>", methods=["POST"])
+def delete_asset(asset_type, asset_name):
+    # Delete asset from filesystem
+    path = os.path.join("static/images/", asset_type, asset_name)
+    try:
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            return redirect(f"/admin/assets?error=Asset not found: {asset_name}")
+    except Exception as e:
+        return redirect(f"/admin/assets?error=Error deleting asset: {e}")
+
+    return redirect("/admin/assets")
 
 
 @app.route("/admin/advancements/new", methods=["POST"])

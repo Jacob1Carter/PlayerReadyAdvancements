@@ -40,7 +40,7 @@
                                 <a href="/admin/advancements/edit/{{ advancement.id }}">Edit</a>
                             </td>
                             <td>
-                                <form action="/admin/advancements/delete/{{ advancement.id }}" method="POST">
+                                <form action="/admin/advancements/delete/{{ advancement.id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete the advancement &quot;{{ advancement.name }}&quot;? This action cannot be undone.');">
                                     <input type="submit" value="Delete">
                                 </form>
                             </td>

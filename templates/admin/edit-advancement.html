@@ -1,0 +1,94 @@
+<!-- admin/edit-advancement.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin home</a>
+            <br>
+            <a href="/admin/advancements/list">All advancements</a>
+            <br>
+            <h3>Edit Advancement</h3>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <form action="/admin/advancements/edit/{{ advancement.id }}/submit" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="{{ advancement.name }}" required>
+                <br>
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" required>{{ advancement.description }}</textarea>
+                <br>
+                <select name="image-type" id="image-type" required>
+                    <option value="" disabled {% if image_type is none %}selected{% endif %}>Please select an option...</option>
+                    <option value="item" {% if image_type == "items" %}selected{% endif %}>item</option>
+                    <option value="block" {% if image_type == "blocks" %}selected{% endif %}>block</option>
+                </select>
+                <select name="item-image-name" id="item-image-name" {% if image_type != "items" %}disabled{% endif %}>
+                    <option value="" disabled {% if image_type != "items" %}selected{% endif %}>Select an item...</option>
+                    {% for item in item_images %}
+                        <option value="{{ item }}" {% if item == image_name %}selected{% endif %}>{{ item }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="block-image-name" id="block-image-name" {% if image_type != "blocks" %}disabled{% endif %}>
+                    <option value="" disabled {% if image_type != "blocks" %}selected{% endif %}>Select a block...</option>
+                    {% for block in block_images %}
+                        <option value="{{ block }}" {% if block == image_name %}selected{% endif %}>{{ block }}</option>
+                    {% endfor %}
+                </select>
+                <img id="image-preview" src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="Image preview" style="width: 64px; height:64px;">
+                <br>
+                <input type="submit" value="Save Changes">
+            </form>
+
+            <script>
+                document.getElementById('image-type').addEventListener('change', function() {
+                    const itemSelect = document.getElementById('item-image-name');
+                    const blockSelect = document.getElementById('block-image-name');
+                    const imagePreview = document.getElementById('image-preview');
+                    
+                    if (this.value === 'item') {
+                        itemSelect.disabled = false;
+                        itemSelect.required = true;
+                        blockSelect.disabled = true;
+                        blockSelect.required = false;
+                        blockSelect.value = '';
+                        imagePreview.src = '/static/images/misc/preview_placeholder.png';
+                    } else if (this.value === 'block') {
+                        blockSelect.disabled = false;
+                        blockSelect.required = true;
+                        itemSelect.disabled = true;
+                        itemSelect.required = false;
+                        itemSelect.value = '';
+                        imagePreview.src = '/static/images/misc/preview_placeholder.png';
+                    }
+                });
+
+                document.getElementById('item-image-name').addEventListener('change', function() {
+                    const preview = document.getElementById('image-preview');
+                    if (this.value) {
+                        preview.src = '/static/images/items/' + this.value;
+                    } else {
+                        preview.src = '/static/images/misc/preview_placeholder.png';
+                    }
+                });
+
+                document.getElementById('block-image-name').addEventListener('change', function() {
+                    const preview = document.getElementById('image-preview');
+                    if (this.value) {
+                        preview.src = '/static/images/blocks/' + this.value;
+                        preview.style.display = 'inline';
+                    } else {
+                        preview.src = '/static/images/misc/preview_placeholder.png';
+                        preview.style.display = 'none';
+                    }
+                });
+            </script>
+        </div>
+    </body>
+</html>
+
+<!-- /admin/edit-advancement.html -->

@@ -62,4 +62,36 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
+/* assets management */
+
+.assets-existing {
+    margin: 20px 20px 20px 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.assets-existing ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.assets-existing li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.assets-existing li:last-child {
+    border-bottom: none;
+}
+
+.assets-existing img {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
 /* /admin-styles.css */

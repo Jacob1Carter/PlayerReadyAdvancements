@@ -33,10 +33,11 @@
                         <option value="{{ block }}">{{ block }}</option>
                     {% endfor %}
                 </select>
-                <img id="image-preview" src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="Block preview" style="width: 64px; height:64px;">
+                <img id="image-preview" src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="Image preview" style="width: 64px; height:64px;">
 
                 <button type="submit">Add Advancement</button>
             </form>
+            <a href="/admin/assets">Manage Assets</a>
         </div>
 
         <script>

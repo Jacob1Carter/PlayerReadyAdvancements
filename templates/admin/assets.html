@@ -1,0 +1,70 @@
+<!-- admin/assets.html -->
+
+<html lang="en-gb">
+    {% include "admin/header.html" %}
+
+    <body>
+
+        <div class="content">
+            <a href="/admin">Admin home</a>
+            <br>
+            <h3>Assets</h3>
+
+            <div class="assets-main">
+                <div class="assets-existing">
+                {% if error is not none %}
+                    <p class="error">{{ error }}</p>
+                {% else %}
+                    <h3>Existing assets</h3>
+                    <h4>Item assets</h4>
+                    <ul>
+                        {% if item_assets is none or item_assets|length == 0 %}
+                            <li>No item assets found.</li>
+                        {% else %}
+                            {% for asset in item_assets %}
+                                <li>
+                                    <img src="{{ url_for('static', filename='images/items/' + asset) }}" alt="{{ asset }}">
+                                    {{ asset }}
+                                    <form action="/admin/assets/delete/items/{{ asset }}" method="POST" onsubmit="return confirm('Are you sure you want to delete the asset &quot;{{ asset }}&quot;? This action cannot be undone.');">
+                                        <input type="submit" value="Delete">
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <h4>Block assets</h4>
+                    <ul>
+                        {% if block_assets is none or block_assets|length == 0 %}
+                            <li>No block assets found.</li>
+                        {% else %}
+                            {% for asset in block_assets %}
+                                <li>
+                                    <img src="{{ url_for('static', filename='images/blocks/' + asset) }}" alt="{{ asset }}">
+                                    {{ asset }}
+                                    <form action="/admin/assets/delete/blocks/{{ asset }}" method="POST" onsubmit="return confirm('Are you sure you want to delete the asset &quot;{{ asset }}&quot;? This action cannot be undone.');">
+                                        <input type="submit" value="Delete">
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                {% endif %}
+                </div>
+                <div class="new-asset">
+                    <h3>Upload new asset</h3>
+                    <form action="/admin/assets/upload" method="post" enctype="multipart/form-data">
+                        <label for="item-image">Item image <small>(16px x 16px ONLY)</small>:</label>
+                        <input type="file" name="item-image" id="item-image" accept=".png,.jpg,.jpeg,.gif">
+                        <br>
+                        <label for="block-image">Block image <small>(64px x 64px ONLY)</small>:</label>
+                        <input type="file" name="block-image" id="block-image" accept=".png,.jpg,.jpeg,.gif">
+                        <br>
+                        <button type="submit">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<!-- /admin/assets.html -->
