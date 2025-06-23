@@ -9,9 +9,28 @@
         <div class="content">
             <h2>Hi {{ user_name }}!</h2>
 
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquyam erat, sed ut perspiciatis. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.</div>
-            <br>
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquyam erat, sed ut perspiciatis. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.</div>
+            <h3>Advancements</h3>
+            {% if error != None %}
+                <p class="error">{{ error }}</p>
+            {% else %}
+                <div class="advancements">
+                    {% for advancement in advancements %}
+                        <div class="advancement">
+                            <div class="adv-frame">
+                                <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
+                                {% if advancement.image %}
+                                    <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="adv-image">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="{{ advancement.name }} image" class="adv-image">
+                                {% endif %}
+                            </div>
+                            <p>{{ advancement.name }}</p>
+                            <p>{{ advancement.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        
         </div>
 
     </body>

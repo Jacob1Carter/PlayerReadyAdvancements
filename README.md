@@ -4,8 +4,14 @@ unfinished
 
 ---
 
-by [Jacob Carter](https://github.com/Jacob1Carter)
+Developed by [Jacob Carter](https://github.com/Jacob1Carter)
 for [Player Ready](https://player-ready.co.uk/)
+
+---
+
+Avaliable on:
+
+[pythonanywhere.com - Player Ready Advancements](https://playerreadyadvancements.pythonanywhere.com/)
 
 ---
 

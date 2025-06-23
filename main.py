@@ -101,17 +101,28 @@ def login_input():
 
 @app.route("/advancements/<user_md5>", methods=["GET"])
 def advancements(user_md5):
+    error = None
     # Find user's name from database
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM USERS WHERE user_md5 = ?", (user_md5,))
-    user = cursor.fetchone()
-    conn.close()
-    if not user:
-        # User not found, redirect to login with NotFound
-        return redirect("/login?NotFound")
-    user_name = user["name"]
-    return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", user_name=user_name)
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM USERS WHERE user_md5 = ?", (user_md5,))
+        user = cursor.fetchone()
+        if not user:
+            # User not found, redirect to login with NotFound
+            return redirect("/login?NotFound")
+        user_name = user["name"]
+
+        #get all advancements
+
+        cursor.execute("SELECT * FROM ADVANCEMENTS ORDER BY ID")
+        advancements = cursor.fetchall()
+        conn.close()
+    except sqlite3.Error as error:
+        if not user_name:
+            user_name = "Unknown User"
+
+    return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", error=error, user_name=user_name, advancements=advancements)
 
 
 # admin routes
