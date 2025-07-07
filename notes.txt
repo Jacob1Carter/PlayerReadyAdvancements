@@ -2,3 +2,10 @@ in static, images/items folder contains ONLY images that are 16x16 pixels, image
 
 
 pythonanywhere password + admin password same as Exeter Hubspot
+
+
+
+
+TODO:
+
+make advancement text invisible until andvancement is hovered, then show advncement name to the side and advancement description below

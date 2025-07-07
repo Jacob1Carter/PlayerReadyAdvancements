@@ -41,9 +41,18 @@ body {
     padding: 8;
     padding-top: 120px;
 
+    margin: 0;
+    height: 100vh;
+    background-image: url("/../../static/images/misc/background.png");
+    background-repeat: repeat;
+    background-size: 64px 64px;
+    background-position: top left;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+
     padding-top: 160px; /* ONLY TO MAKE SPACE FOR DISCLAIMER */
 }
-
 
 
 /* Navbar */
@@ -110,6 +119,7 @@ body {
     font-family: arial;
     font-size: 1.2em;
     font-weight: bold;
+    z-index: 1000;
 }
 
 /* Advancements */
@@ -131,6 +141,10 @@ body {
     justify-content: center;
 }
 
+.advancement {
+    font-size: 40px;
+}
+
 .frame-bg {
     width: 96px;
     height: 96px;
@@ -150,6 +164,74 @@ body {
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
 }
+
+.adv-title {
+    display: flex;
+    flex-direction: row;
+}
+
+.adv-name {
+    background-color: #b98f2c;
+    color: white;
+	margin-bottom: 8px;
+	height: 40px;
+	margin-top: 8px;
+	border-top-width: 4px;
+	border-top-style: solid;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-right-width: 4px;
+	border-right-style: solid;
+	border-color: #000;
+	padding-top: 16px;
+	line-height: 1;
+	padding-bottom: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
+    white-space: nowrap;
+}
+
+.adv-name-side {
+	background-color: #b98f2c;
+	width: 12px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	height: 72px;
+	border-top-width: 4px;
+	border-top-style: solid;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-left-width: 4px;
+	border-left-style: solid;
+}
+
+.adv-desc {
+    background-color: #212121;
+    color: #54fc54;
+    margin-top: -12px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    border-right-width: 4px;
+    border-right-style: solid;
+    border-top-width: 4px;
+    border-top-style: solid;
+    border-color: #000;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 4px;
+    margin-bottom: 0px;
+    line-height: 1;
+    padding-top: 12px;
+}
+
+.adv-name-side, .adv-name, .adv-desc {
+    opacity: 0;
+    cursor: default;
+    transition: opacity 0.1s ease-in-out;
+}
+
 
 /* important styles */
 
