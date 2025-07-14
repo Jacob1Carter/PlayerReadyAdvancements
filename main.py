@@ -103,6 +103,10 @@ def login_input():
 @app.route("/advancements/<user_md5>", methods=["GET"])
 def advancements(user_md5):
     error = None
+
+    with open("data/layout.json", "r") as f:
+        layout_data = json.load(f)
+
     # Find user's name from database
     try:
         conn = get_db_connection()
@@ -123,7 +127,7 @@ def advancements(user_md5):
         if not user_name:
             user_name = "Unknown User"
 
-    return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", error=error, user_name=user_name, advancements=advancements)
+    return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", error=error, layout=layout_data, user_name=user_name, advancements=advancements)
 
 
 # admin routes

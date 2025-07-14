@@ -14,21 +14,42 @@
                 <p class="error">{{ error }}</p>
             {% else %}
                 <div class="advancements">
-                    {% for advancement in advancements %}
-                        <div class="advancement">
-                            <div class="adv-title">
-                                <div class="adv-name-side"></div>
-                                <div class="adv-frame">
-                                    <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
-                                    {% if advancement.image %}
-                                        <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="adv-image">
-                                    {% else %}
-                                        <img src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="{{ advancement.name }} image" class="adv-image">
-                                    {% endif %}
+                    {% for x in layout %}
+                        <div class="advancement-column">
+                            {% for y in layout[x] %}
+                                {% if layout[x][y]["id"] == "NONE" %}
+                                <div class="adv-tile tile-empty">
+                                    <img src="{{ url_for('static', filename='images/tile-bgs/' + layout[x][y]['bg'] + '.png') }}" class="tile-bg">
                                 </div>
-                                <p class="adv-name">{{ advancement.name }}</p>
-                            </div>
-                            <p class="adv-desc">{{ advancement.description }}</p>
+                                {% else %}
+                                    {% for advancement in advancements %}
+                                        {% if advancement.id|string == layout[x][y]["id"] %}
+                                            {% set found = True %}
+                                            <div class="advancement">
+                                                <img src="{{ url_for('static', filename='images/tile-bgs/' + layout[x][y]['bg'] + '.png') }}" class="tile-bg">
+                                                <div class="adv-main">
+                                                    <div class="adv-title">
+                                                        <div class="adv-name-side"></div>
+                                                        <div class="adv-frame">
+                                                            <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
+                                                            {% if advancement.image %}
+                                                                <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="adv-image">
+                                                            {% else %}
+                                                                <img src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="{{ advancement.name }} image" class="adv-image">
+                                                            {% endif %}
+                                                        </div>
+                                                        <p class="adv-name">{{ advancement.name }}</p>
+                                                    </div>
+                                                    <p class="adv-desc">{{ advancement.description }}</p>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not found %}
+                                        <div class="adv-tile tile-empty"></div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     {% endfor %}
                 </div>
@@ -38,33 +59,56 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-            const advancements = document.querySelectorAll('.advancement');
-            
-            advancements.forEach(advancement => {
-                const frame = advancement.querySelector('.adv-frame');
-                const textElements = advancement.querySelectorAll('.adv-name-side, .adv-name, .adv-desc');
-                let isActivated = false;
+                const advancements = document.querySelectorAll('.advancement');
                 
-                // Show elements when hovering over frame
-                frame.addEventListener('mouseenter', () => {
-                    isActivated = true;
-                    textElements.forEach(el => el.style.opacity = '1');
-                });
-                
-                // Keep elements visible while hovering over advancement
-                advancement.addEventListener('mouseleave', () => {
-                    isActivated = false;
-                    textElements.forEach(el => el.style.opacity = '0');
-                });
-                
-                // Prevent hiding when moving from frame to other parts of advancement
-                advancement.addEventListener('mouseenter', () => {
-                    if (isActivated) {
-                        textElements.forEach(el => el.style.opacity = '1');
+                advancements.forEach(advancement => {
+                    const frame = advancement.querySelector('.adv-frame');
+                    const textElements = advancement.querySelectorAll('.adv-name-side, .adv-name, .adv-desc');
+                    const descElement = advancement.querySelector('.adv-desc');
+                    let isActivated = false;
+                    
+                    // Show elements when hovering over frame
+                    frame.addEventListener('mouseenter', () => {
+                        isActivated = true;
+                        showElements();
+                    });
+                    
+                    // Hide elements when leaving the entire advancement area
+                    advancement.addEventListener('mouseleave', () => {
+                        isActivated = false;
+                        hideElements();
+                    });
+                    
+                    // Keep elements visible when hovering over any text element
+                    textElements.forEach(element => {
+                        element.addEventListener('mouseenter', () => {
+                            if (isActivated) {
+                                showElements();
+                            }
+                        });
+                    });
+                    
+                    function showElements() {
+                        frame.style.zIndex = '20';
+                        textElements.forEach(el => {
+                            el.style.opacity = '1';
+                            if (el === descElement) {
+                                el.style.zIndex = '18';
+                            } else {
+                                el.style.zIndex = '19';
+                            }
+                        });
+                    }
+                    
+                    function hideElements() {
+                        frame.style.zIndex = '';
+                        textElements.forEach(el => {
+                            el.style.opacity = '0';
+                            el.style.zIndex = '';
+                        });
                     }
                 });
             });
-        });
         </script>
 
     </body>

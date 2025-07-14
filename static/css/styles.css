@@ -125,11 +125,29 @@ body {
 /* Advancements */
 
 .advancements {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(10, 112px);
+    padding-left: 200px;
+}
+
+.advancement-column {
+    display: grid;
+    grid-template-rows: repeat(9, 112px);
+}
+
+.tile-bg {
+    width: 112px;
+    height: 112px;
+    position: absolute;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.tile-empty {
+    width: 112px;
+    height: 112px;
+    position: relative;
 }
 
 .adv-frame {
@@ -144,6 +162,13 @@ body {
 
 .advancement {
     font-size: 40px;
+    position: relative;
+}
+
+.adv-main {
+    position: absolute;
+    top: 8px;
+    left: -8px;
 }
 
 .frame-bg {
