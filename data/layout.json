@@ -1,0 +1,44 @@
+{
+    "0": {
+        "-1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "0": {
+            "id": "1",
+            "bg": "half right"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        }
+    },
+    "1": {
+        "-1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "0": {
+            "id": "NONE",
+            "bg": "horis"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        }
+    },
+    "2": {
+        "-1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "0": {
+            "id": "2",
+            "bg": "horis"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        }
+    }
+}

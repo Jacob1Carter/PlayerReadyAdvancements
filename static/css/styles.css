@@ -139,6 +139,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .advancement {
@@ -189,6 +190,7 @@ body {
 	padding-left: 16px;
 	padding-right: 16px;
     white-space: nowrap;
+    text-shadow: 4px 4px 0px #3e3e3e;
 }
 
 .adv-name-side {
@@ -224,6 +226,7 @@ body {
     margin-bottom: 0px;
     line-height: 1;
     padding-top: 12px;
+    text-shadow: 4px 4px 0px #153e15;
 }
 
 .adv-name-side, .adv-name, .adv-desc {

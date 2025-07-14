@@ -3,6 +3,7 @@
 from flask import Flask, render_template, redirect, request
 import sqlite3
 import os
+import json
 
 app = Flask(__name__)
 
@@ -203,7 +204,20 @@ def advancements_list():
 
 @app.route("/admin/advancements/layout", methods=["GET"])
 def advancements_layout():
-    return render_template("admin/advancements-layout.html")
+    with open("data/layout.json", "r") as f:
+        layout_data = json.load(f)
+    
+    #get all advancements from database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM ADVANCEMENTS ORDER BY ID")
+        advancements = cursor.fetchall()
+    except sqlite3.Error as error:
+        advancements = []
+    conn.close()
+
+    return render_template("admin/advancements-layout.html", layout=layout_data, advancements=advancements)
 
 
 @app.route("/admin/advancements/create", methods=["GET"])
@@ -362,6 +376,108 @@ def add_advancement():
 
     conn.close()
     return redirect("/admin/advancements")
+
+
+# ...existing code...
+@app.route("/admin/advancements/layout-submit", methods=["POST"])
+def advancements_layout_submit_action():
+    action = request.form.get("action")
+
+    with open("data/layout.json", "r") as f:
+        layout_data = json.load(f)
+    
+    max_x = int(max(layout_data.keys(), key=int)) if layout_data else 0
+    min_x = int(min(layout_data.keys(), key=int)) if layout_data else 0
+    
+    max_y = int(max(max(layout_data[x].keys(), key=int) for x in layout_data)) if layout_data else 0
+    min_y = int(min(min(layout_data[x].keys(), key=int) for x in layout_data)) if layout_data else 0
+
+    if action == "add-row-top":
+        # Add a new row at the top (decrease y values)
+        for x in layout_data:
+            layout_data[x][str(min_y - 1)] = {"id": "NONE", "bg": "NONE"}
+    elif action == "add-row-bottom":
+        # Add a new row at the bottom (increase y values)
+        for x in layout_data:
+            layout_data[x][str(max_y + 1)] = {"id": "NONE", "bg": "NONE"}
+    elif action == "add-column-left":
+        # Add a new column to the left (decrease x values)
+        new_x = str(min_x - 1)
+        layout_data[new_x] = {str(y): {"id": "NONE", "bg": "NONE"} for y in range(min_y, max_y + 1)}
+    elif action == "add-column-right":
+        # Add a new column to the right (increase x values)
+        new_x = str(max_x + 1)
+        layout_data[new_x] = {str(y): {"id": "NONE", "bg": "NONE"} for y in range(min_y, max_y + 1)}
+    elif action == "remove-row-top":
+        # Remove the top row (remove smallest y)
+        for x in layout_data:
+            if str(min_y) in layout_data[x]:
+                del layout_data[x][str(min_y)]
+    elif action == "remove-row-bottom":
+        # Remove the bottom row (remove largest y)
+        for x in layout_data:
+            if str(max_y) in layout_data[x]:
+                del layout_data[x][str(max_y)]
+    elif action == "remove-column-left":
+        # Remove the leftmost column (remove smallest x)
+        if str(min_x) in layout_data:
+            del layout_data[str(min_x)]
+    elif action == "remove-column-right":
+        # Remove the rightmost column (remove largest x)
+        if str(max_x) in layout_data:
+            del layout_data[str(max_x)]
+    elif action == "download":
+        # Download the layout as a JSON file
+        return redirect("/admin/advancements/layout/download")
+
+    # order the layout data by x and y
+    layout_data = {k: dict(sorted(v.items(), key=lambda item: int(item[0]))) for k, v in sorted(layout_data.items(), key=lambda item: int(item[0]))}
+
+    # Save the updated layout back to the file
+    with open("data/layout.json", "w") as f:
+        json.dump(layout_data, f, indent=4)
+
+    return redirect("/admin/advancements/layout")
+# ...existing code...
+
+
+@app.route("/admin/advancements/layout/download")
+def advancements_layout_download():
+    # Load the layout data
+    with open("data/layout.json", "r") as f:
+        layout_data = json.load(f)
+
+    # Create a JSON response
+    response = app.response_class(
+        response=json.dumps(layout_data, indent=4),
+        status=200,
+        mimetype='application/json'
+    )
+    response.headers["Content-Disposition"] = "attachment; filename=layout.json"
+    
+    return response
+
+
+@app.route("/admin/advancements/layout-submit/<string:x>/<string:y>", methods=["POST"])
+def advancements_layout_submit(x, y):
+    # Get the layout data from the form
+    bg = request.form.get("background")
+    id = request.form.get("advancement")
+
+    # Load the existing layout
+    with open("data/layout.json", "r") as f:
+        layout_data = json.load(f)
+
+    # Update the layout data
+    if x not in layout_data:
+        layout_data[x] = {}
+    layout_data[x][y] = {"id": id, "bg": bg}
+
+    # Save the updated layout back to the file
+    with open("data/layout.json", "w") as f:
+        json.dump(layout_data, f, indent=4)
+
+    return redirect("/admin/advancements/layout")
 
 
 # add advancement

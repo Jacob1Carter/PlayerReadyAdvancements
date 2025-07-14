@@ -11,7 +11,72 @@
             <a href="/admin/advancements">Advancements</a>
             <br>
             <h3>Advancements layout</h3>
-            <p>Not yet implemented</p>
+
+            <form action="/admin/advancements/layout-submit" method="post">
+                <button name="action" value="add-row-top">Add Row Above</button>
+                <button name="action" value="add-row-bottom">Add Row Below</button>
+                <button name="action" value="add-column-left">Add Column Left</button>
+                <button name="action" value="add-column-right">Add Column Right</button>
+
+                <button name="action" value="remove-row-top">Remove Row Above</button>
+                <button name="action" value="remove-row-bottom">Remove Row Below</button>
+                <button name="action" value="remove-column-left">Remove Column Left</button>
+                <button name="action" value="remove-column-right">Remove Column Right</button>
+
+                <button name="action" value="download">Download json</button>
+            </form>
+            
+            <div class="layout-grid">
+                {% for x in layout %}
+                    <div class="layout-column column-{{ x }}">
+                        {% for y in layout[x] %}
+                            <div class="tile-slot">
+                                <div class="tile-art">
+                                    <img src="{{ url_for('static', filename='images/tile-bgs/' + layout[x][y]['bg']) }}.png" class="tile-bg">
+                                    {% if layout[x][y].id != 'NONE' %}
+                                        {% for advancement in advancements %}
+                                            {% if advancement.id|string == layout[x][y].id|string %}
+                                                <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="tile-frame">
+                                                <img src="{{ url_for('static', filename='images/' + advancement.image) }}" class="tile-image">
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="tile-details">
+                                    <form class="tile-form" action="/admin/advancements/layout-submit/{{ x }}/{{ y }}" method="post">
+                                        <select name="advancement" class="tile-select">
+                                            <option value="NONE">NONE</option>
+                                            {% for advancement in advancements %}
+                                                <option value="{{ advancement.id }}" {% if layout[x][y]["id"] == advancement.id|string %}selected{% endif %}>{{ advancement.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <select name="background" class="tile-select">
+                                            <option value="NONE" {% if layout[x][y]["bg"] == 'NONE' %}selected{% endif %}>NONE</option>
+                                            <option value="horis" {% if layout[x][y]["bg"] == 'horis' %}selected{% endif %}>─ Horizontal</option>
+                                            <option value="verti" {% if layout[x][y]["bg"] == 'verti' %}selected{% endif %}>│ Vertical</option>
+                                            <option value="half right" {% if layout[x][y]["bg"] == 'half right' %}selected{% endif %}>╶ Right Half Horizontal</option>
+                                            <option value="half left" {% if layout[x][y]["bg"] == 'half left' %}selected{% endif %}>╴ Left Half Horizontal</option>
+                                            <option value="half bottom" {% if layout[x][y]["bg"] == 'half bottom' %}selected{% endif %}>╷ Lower Half Vertical</option>
+                                            <option value="half top" {% if layout[x][y]["bg"] == 'half top' %}selected{% endif %}>╵ Upper Half Vertical</option>
+                                            <option value="br angle" {% if layout[x][y]["bg"] == 'br angle' %}selected{% endif %}>┌ Top-Left Corner</option>
+                                            <option value="bl angle" {% if layout[x][y]["bg"] == 'bl angle' %}selected{% endif %}>┐ Top-Right Corner</option>
+                                            <option value="tr angle" {% if layout[x][y]["bg"] == 'tr angle' %}selected{% endif %}>└ Bottom-Left Corner</option>
+                                            <option value="tl angle" {% if layout[x][y]["bg"] == 'tl angle' %}selected{% endif %}>┘ Bottom-Right Corner</option>
+                                            <option value="trb T" {% if layout[x][y]["bg"] == 'trb T' %}selected{% endif %}>├ T-Junction Left</option>
+                                            <option value="tlb T" {% if layout[x][y]["bg"] == 'tlb T' %}selected{% endif %}>┤ T-Junction Right</option>
+                                            <option value="lbr T" {% if layout[x][y]["bg"] == 'lbr T' %}selected{% endif %}>┬ T-Junction Top</option>
+                                            <option value="ltr T" {% if layout[x][y]["bg"] == 'ltr T' %}selected{% endif %}>┴ T-Junction Bottom</option>
+                                            <option value="4way" {% if layout[x][y]["bg"] == '4way' %}selected{% endif %}>┼ 4-Way Junction</option>
+                                        </select>
+                                        <button type="submit">Submit</button>
+                                    </form>
+                                </div>
+                                <p class="tile-pos">{{ x }}, {{ y }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
     </body>
 </html>
 
