@@ -1,5 +1,9 @@
 {
     "0": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "NONE"
@@ -11,9 +15,17 @@
         "1": {
             "id": "NONE",
             "bg": "NONE"
+        },
+        "2": {
+            "id": "NONE",
+            "bg": "NONE"
         }
     },
     "1": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "NONE"
@@ -23,67 +35,107 @@
             "bg": "horis"
         },
         "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "2": {
             "id": "NONE",
             "bg": "NONE"
         }
     },
     "2": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "NONE"
         },
         "0": {
             "id": "2",
-            "bg": "horis"
+            "bg": "lbr T"
         },
         "1": {
             "id": "NONE",
-            "bg": "NONE"
-        }
-    },
-    "3": {
-        "-1": {
+            "bg": "verti"
+        },
+        "2": {
             "id": "1",
-            "bg": "br angle"
-        },
-        "0": {
-            "id": "NONE",
-            "bg": "tlb T"
-        },
-        "1": {
-            "id": "2",
             "bg": "tr angle"
         }
     },
-    "4": {
-        "-1": {
-            "id": "2",
-            "bg": "horis"
-        },
-        "0": {
+    "3": {
+        "-2": {
             "id": "NONE",
             "bg": "NONE"
         },
+        "-1": {
+            "id": "NONE",
+            "bg": "br angle"
+        },
+        "0": {
+            "id": "2",
+            "bg": "ltr T"
+        },
         "1": {
             "id": "NONE",
+            "bg": "NONE"
+        },
+        "2": {
+            "id": "NONE",
+            "bg": "horis"
+        }
+    },
+    "4": {
+        "-2": {
+            "id": "1",
+            "bg": "half bottom"
+        },
+        "-1": {
+            "id": "1",
+            "bg": "ltr T"
+        },
+        "0": {
+            "id": "NONE",
+            "bg": "horis"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "2": {
+            "id": "2",
             "bg": "horis"
         }
     },
     "5": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "bl angle"
         },
         "0": {
-            "id": "1",
-            "bg": "trb T"
+            "id": "2",
+            "bg": "4way"
         },
         "1": {
-            "id": "2",
+            "id": "NONE",
+            "bg": "verti"
+        },
+        "2": {
+            "id": "NONE",
             "bg": "tl angle"
         }
     },
     "6": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "NONE"
@@ -95,18 +147,30 @@
         "1": {
             "id": "NONE",
             "bg": "NONE"
+        },
+        "2": {
+            "id": "NONE",
+            "bg": "NONE"
         }
     },
     "7": {
+        "-2": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
         "-1": {
             "id": "NONE",
             "bg": "NONE"
         },
         "0": {
-            "id": "2",
+            "id": "1",
             "bg": "half left"
         },
         "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "2": {
             "id": "NONE",
             "bg": "NONE"
         }

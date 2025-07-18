@@ -8,4 +8,4 @@ pythonanywhere password + admin password same as Exeter Hubspot
 
 TODO:
 
-make advancement text invisible until andvancement is hovered, then show advncement name to the side and advancement description below
+Fix z indexes for advanccement descriptions and names
