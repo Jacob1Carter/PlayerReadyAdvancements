@@ -130,6 +130,19 @@ def advancements(user_md5):
     return render_template("main/advancements.html", title=f"{user_name}'s Advancements - Player Ready Advancements", error=error, layout=layout_data, user_name=user_name, advancements=advancements)
 
 
+@app.route("/advancement-detail/<int:advancement_id>", methods=["GET"])
+def advancement_detail(advancement_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM ADVANCEMENTS WHERE ID = ?", (advancement_id,))
+    advancement = cursor.fetchone()
+    conn.close()
+    if not advancement:
+        return 404
+    
+    return render_template("main/advancement-detail.html", title=f"{advancement['name']} - Player Ready Advancements", advancement=advancement)
+
+
 # admin routes
 
 

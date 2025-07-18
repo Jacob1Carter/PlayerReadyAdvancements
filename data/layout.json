@@ -40,5 +40,75 @@
             "id": "NONE",
             "bg": "NONE"
         }
+    },
+    "3": {
+        "-1": {
+            "id": "1",
+            "bg": "br angle"
+        },
+        "0": {
+            "id": "NONE",
+            "bg": "tlb T"
+        },
+        "1": {
+            "id": "2",
+            "bg": "tr angle"
+        }
+    },
+    "4": {
+        "-1": {
+            "id": "2",
+            "bg": "horis"
+        },
+        "0": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "horis"
+        }
+    },
+    "5": {
+        "-1": {
+            "id": "NONE",
+            "bg": "bl angle"
+        },
+        "0": {
+            "id": "1",
+            "bg": "trb T"
+        },
+        "1": {
+            "id": "2",
+            "bg": "tl angle"
+        }
+    },
+    "6": {
+        "-1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "0": {
+            "id": "NONE",
+            "bg": "horis"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        }
+    },
+    "7": {
+        "-1": {
+            "id": "NONE",
+            "bg": "NONE"
+        },
+        "0": {
+            "id": "2",
+            "bg": "half left"
+        },
+        "1": {
+            "id": "NONE",
+            "bg": "NONE"
+        }
     }
 }

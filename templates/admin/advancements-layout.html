@@ -13,17 +13,45 @@
             <h3>Advancements layout</h3>
 
             <form action="/admin/advancements/layout-submit" method="post">
-                <button name="action" value="add-row-top">Add Row Above</button>
-                <button name="action" value="add-row-bottom">Add Row Below</button>
-                <button name="action" value="add-column-left">Add Column Left</button>
-                <button name="action" value="add-column-right">Add Column Right</button>
-
-                <button name="action" value="remove-row-top">Remove Row Above</button>
-                <button name="action" value="remove-row-bottom">Remove Row Below</button>
-                <button name="action" value="remove-column-left">Remove Column Left</button>
-                <button name="action" value="remove-column-right">Remove Column Right</button>
-
+                <div class="button-grid">
+                    <div class="button-column">
+                        <p></p>
+                        <button class="float-right" name="action" value="add-column-left">Add Column Left</button>
+                        <p></p>
+                    </div>
+                    <div class="button-column thin-column">
+                        <button name="action" value="add-row-top">Add Row Above</button>
+                        <p>+</p>
+                        <button name="action" value="add-row-bottom">Add Row Below</button>
+                    </div>
+                    <div class="button-column">
+                        <p></p>
+                        <button class="float-left" name="action" value="add-column-right">Add Column Right</button>
+                        <p></p>
+                    </div>
+                    <div class="button-column">
+                        <p></p><p></p><p></p>
+                    </div>
+                    <div class="button-column">
+                        <p></p>
+                        <button class="float-right" name="action" value="remove-column-left">Remove Column Left</button>
+                        <p></p>
+                    </div>
+                    <div class="button-column thin-column">
+                        <button name="action" value="remove-row-top">Remove Row Above</button>
+                        <p>-</p>
+                        <button name="action" value="remove-row-bottom">Remove Row Below</button>
+                    </div>
+                    <div class="button-column">
+                        <p></p>
+                        <button class="float-left" name="action" value="remove-column-right">Remove Column Right</button>
+                        <p></p>
+                    </div>
+                </div>
+                <br>
                 <button name="action" value="download">Download json</button>
+                <br>
+
             </form>
             
             <div class="layout-grid">

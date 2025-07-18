@@ -1,0 +1,27 @@
+<!-- main/advancement-detail.html -->
+
+<html lang="en-gb">
+    {% include "base/header.html" %}
+
+    <body>
+        {% include "base/navbar.html" %}
+
+        <div class="content">
+            <div class="advancement-detail-title">
+                <div class="advancement-detail-image">
+                    <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
+                    <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="adv-image">
+                </div>
+                <h1>{{ advancement.name }}</h1>
+            </div>
+            <div class="advancement-detail-description">
+                <p>{{ advancement.description }}</p>
+            </div>
+        </div>
+
+    </body>
+    
+    {% include "base/footer.html" %}
+</html>
+
+<!-- /main/advancement-detail.html -->

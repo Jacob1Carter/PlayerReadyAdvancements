@@ -25,6 +25,7 @@
                                     {% for advancement in advancements %}
                                         {% if advancement.id|string == layout[x][y]["id"] %}
                                             {% set found = True %}
+                                            <a href="/advancement-detail/{{ advancement.id }}">
                                             <div class="advancement">
                                                 <img src="{{ url_for('static', filename='images/tile-bgs/' + layout[x][y]['bg'] + '.png') }}" class="tile-bg">
                                                 <div class="adv-main">
@@ -43,11 +44,9 @@
                                                     <p class="adv-desc">{{ advancement.description }}</p>
                                                 </div>
                                             </div>
+                                            </a>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if not found %}
-                                        <div class="adv-tile tile-empty"></div>
-                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </div>
