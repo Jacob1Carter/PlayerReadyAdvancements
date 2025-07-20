@@ -150,6 +150,7 @@ body {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+    z-index: -1;
 }
 
 .tile-empty {
@@ -169,8 +170,9 @@ body {
 }
 
 .advancement {
-    font-size: 40px;
+    font-size: 37px;
     position: relative;
+    z-index: 1;
 }
 
 .adv-main {
@@ -207,43 +209,44 @@ body {
 .adv-name {
     background-color: #b98f2c;
     color: white;
-	margin-bottom: 8px;
-	height: 40px;
-	margin-top: 8px;
 	border-top-width: 4px;
 	border-top-style: solid;
+    border-top-color: #dba213;
 	border-bottom-width: 4px;
 	border-bottom-style: solid;
-	border-right-width: 4px;
-	border-right-style: solid;
-	border-color: #000;
-	padding-top: 16px;
+	border-bottom-color: #493606;
+	padding-top: 12px;
 	line-height: 1;
-	padding-bottom: 16px;
+	padding-bottom: 12px;
 	padding-left: 16px;
-	padding-right: 16px;
+	padding-right: 8px;
     white-space: nowrap;
     text-shadow: 4px 4px 0px #3e3e3e;
+    margin: 0px;
+    height: 40px;
 }
 
-.adv-name-side {
-	background-color: #b98f2c;
-	width: 12px;
+.adv-name-border {
+    background-color: #000;
 	margin-top: 8px;
 	margin-bottom: 8px;
-	height: 72px;
-	border-top-width: 4px;
-	border-top-style: solid;
-	border-bottom-width: 4px;
-	border-bottom-style: solid;
-	border-left-width: 4px;
-	border-left-style: solid;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.name-side {
+    width: 16px;
+    height: 80px;
+    position: relative;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    padding-top: 8px;
 }
 
 .adv-desc {
     background-color: #212121;
     color: #54fc54;
-    margin-top: -12px;
     border-left-width: 4px;
     border-left-style: solid;
     border-bottom-width: 4px;
@@ -252,20 +255,102 @@ body {
     border-right-style: solid;
     border-top-width: 4px;
     border-top-style: solid;
-    border-color: #000;
+    border-color: #555555;
     padding-left: 16px;
     padding-right: 16px;
-    padding-bottom: 4px;
-    margin-bottom: 0px;
+    padding-bottom: 8px;
     line-height: 1;
     padding-top: 12px;
     text-shadow: 4px 4px 0px #153e15;
+    margin:0px;
 }
 
-.adv-name-side, .adv-name, .adv-desc {
+.adv-desc-border {
+    background-color: #000;
+    margin-top: -16px;
+    margin-bottom: 0px;
+    padding: 4px;
+}
+
+.adv-temp {
     opacity: 0;
-    cursor: default;
-    transition: opacity 0.1s ease-in-out;
+    z-index: -1000;
+}
+
+/* Advancement Detail Page */
+
+.advancement-detail-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.advancement-detail-name-side {
+    width: 32px;
+    height: 160px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    position: relative;
+    margin-top: 16px;
+}
+
+.side-right {
+    margin-left: auto;
+}
+
+.advancement-detail-image {
+    width: 192px;
+    height: 192px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.advancement-detail-frame-bg {
+    width: 192px;
+    height: 192px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.advancement-detail-icon {
+    width: 128px;
+    height: 128px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    position: relative;
+    z-index: 1;
+}
+
+.advancement-detail-name-border {
+    background-color: #000;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.advancement-detail-name {
+    background-color: #b98f2c;
+    color: white;
+    border-top-width: 8px;
+	border-top-style: solid;
+    border-top-color: #dba213;
+	border-bottom-width: 8px;
+	border-bottom-style: solid;
+	border-bottom-color: #493606;
+    margin: 0px;
 }
 
 

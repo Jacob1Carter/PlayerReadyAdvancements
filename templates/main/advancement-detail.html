@@ -8,11 +8,15 @@
 
         <div class="content">
             <div class="advancement-detail-title">
+                <img src="{{ url_for('static', filename='images/misc/' + 'name-left.png' ) }}" class="advancement-detail-name-side side-left">
                 <div class="advancement-detail-image">
-                    <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
-                    <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="adv-image">
+                    <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="advancement-detail-frame-bg">
+                    <img src="{{ url_for('static', filename='images/' + advancement.image) }}" alt="{{ advancement.name }} image" class="advancement-detail-icon">
                 </div>
-                <h1>{{ advancement.name }}</h1>
+                <div class="advancement-detail-name-border">
+                    <h1 class="advancement-detail-name">{{ advancement.name }}</h1>
+                </div>
+                <img src="{{ url_for('static', filename='images/misc/' + 'name-right.png' ) }}" class="advancement-detail-name-side side-right">
             </div>
             <div class="advancement-detail-description">
                 <p>{{ advancement.description }}</p>

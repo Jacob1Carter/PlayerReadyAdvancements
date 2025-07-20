@@ -2,6 +2,7 @@
 
 <html lang="en-gb">
     {% include "base/header.html" %}
+    <script src="{{ url_for('static', filename='js/force-adv-desc.js') }}"></script>
 
     <body>
         {% include "base/navbar.html" %}
@@ -30,7 +31,7 @@
                                                 <img src="{{ url_for('static', filename='images/tile-bgs/' + layout[x][y]['bg'] + '.png') }}" class="tile-bg">
                                                 <div class="adv-main">
                                                     <div class="adv-title">
-                                                        <div class="adv-name-side"></div>
+                                                        <img src="{{ url_for('static', filename='images/misc/' + 'name-left.png' ) }}" class="name-side adv-temp">
                                                         <div class="adv-frame">
                                                             <img src="{{ url_for('static', filename='images/misc/frame.png') }}" class="frame-bg">
                                                             {% if advancement.image %}
@@ -39,9 +40,14 @@
                                                                 <img src="{{ url_for('static', filename='images/misc/preview_placeholder.png') }}" alt="{{ advancement.name }} image" class="adv-image">
                                                             {% endif %}
                                                         </div>
-                                                        <p class="adv-name">{{ advancement.name }}</p>
+                                                        <div class="adv-name-border adv-temp">
+                                                            <p class="adv-name">{{ advancement.name }}</p>
+                                                        </div>
+                                                        <img src="{{ url_for('static', filename='images/misc/' + 'name-right.png' ) }}" class="name-side adv-temp">
                                                     </div>
-                                                    <p class="adv-desc">{{ advancement.description }}</p>
+                                                    <div class="adv-desc-border adv-temp">
+                                                        <p class="adv-desc">{{ advancement.description }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             </a>
@@ -55,57 +61,39 @@
             {% endif %}
         
         </div>
-
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Get all advancement divs
                 const advancements = document.querySelectorAll('.advancement');
                 
                 advancements.forEach(advancement => {
-                    const frame = advancement.querySelector('.adv-frame');
-                    const textElements = advancement.querySelectorAll('.adv-name-side, .adv-name, .adv-desc');
-                    const descElement = advancement.querySelector('.adv-desc');
-                    let isActivated = false;
+                    const advFrame = advancement.querySelector('.adv-frame');
                     
-                    // Show elements when hovering over frame
-                    frame.addEventListener('mouseenter', () => {
-                        isActivated = true;
-                        showElements();
-                    });
-                    
-                    // Hide elements when leaving the entire advancement area
-                    advancement.addEventListener('mouseleave', () => {
-                        isActivated = false;
-                        hideElements();
-                    });
-                    
-                    // Keep elements visible when hovering over any text element
-                    textElements.forEach(element => {
-                        element.addEventListener('mouseenter', () => {
-                            if (isActivated) {
-                                showElements();
-                            }
+                    // Add hover event listener to adv-frame only
+                    advFrame.addEventListener('mouseenter', function() {
+                        // Set high z-index on the entire advancement container
+                        advancement.style.zIndex = '2000';
+                        
+                        // Show all adv-temp elements within this advancement
+                        const tempElements = advancement.querySelectorAll('.adv-temp');
+                        tempElements.forEach(element => {
+                            element.style.opacity = '1';
+                            element.style.zIndex = '1000';
                         });
                     });
                     
-                    function showElements() {
-                        frame.style.zIndex = '20';
-                        textElements.forEach(el => {
-                            el.style.opacity = '1';
-                            if (el === descElement) {
-                                el.style.zIndex = '18';
-                            } else {
-                                el.style.zIndex = '19';
-                            }
+                    // Add leave event listener to entire advancement div
+                    advancement.addEventListener('mouseleave', function() {
+                        // Reset z-index on the entire advancement container
+                        this.style.zIndex = 'auto';
+                        
+                        // Hide all adv-temp elements within this advancement
+                        const tempElements = this.querySelectorAll('.adv-temp');
+                        tempElements.forEach(element => {
+                            element.style.opacity = '0';
+                            element.style.zIndex = '-1000';
                         });
-                    }
-                    
-                    function hideElements() {
-                        frame.style.zIndex = '';
-                        textElements.forEach(el => {
-                            el.style.opacity = '0';
-                            el.style.zIndex = '';
-                        });
-                    }
+                    });
                 });
             });
         </script>
