@@ -350,7 +350,15 @@ body {
 	border-bottom-width: 8px;
 	border-bottom-style: solid;
 	border-bottom-color: #493606;
+    height: 128px;
     margin: 0px;
+    text-align: center;
+    font-size: 4em;
+    line-height: 1;
+    text-shadow: 6px 6px 0px #3e3e3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
