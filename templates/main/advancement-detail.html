@@ -19,10 +19,23 @@
                 <img src="{{ url_for('static', filename='images/misc/' + 'name-right.png' ) }}" class="advancement-detail-name-side side-right">
             </div>
             <div class="advancement-detail-description">
-                <p>{{ advancement.description }}</p>
+                <div class="advancement-detail-description-side desc-border-top">
+                    <div class="pixel-top-left"></div>
+                    <div class="line-top"></div>
+                    <div class="pixel-top-right"></div>
+                </div>
+                <div class="advancement-detail-description-border">
+                    <p>{{ advancement.description }}</p>
+                </div>
+                <div class="advancement-detail-description-side desc-border-bottom">
+                    <div class="pixel-bottom-left"></div>
+                    <div class="line-bottom"></div>
+                    <div class="pixel-bottom-right"></div>
+                </div>
+                
             </div>
         </div>
-
+        
     </body>
     
     {% include "base/footer.html" %}
