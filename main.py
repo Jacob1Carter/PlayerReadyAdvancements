@@ -25,7 +25,7 @@ def construct_db():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, user_md5 TEXT, advancements text DEFAULT '[]')"
+        "CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, user_md5 TEXT)"
     )
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS ADVANCEMENTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, image TEXT)"
@@ -141,38 +141,6 @@ def advancement_detail(advancement_id):
         return 404
     
     return render_template("main/advancement-detail.html", title=f"{advancement['name']} - Player Ready Advancements", advancement=advancement)
-
-
-@app.route("/advancement/<int:advancement_id>/claim", methods=["POST"])
-def claim_advancement(advancement_id):
-    user_md5 = request.form.get("user_md5")
-    if not user_md5:
-        return redirect("/login?NotFound")
-
-    # Get user's advancements
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT advancements FROM USERS WHERE user_md5 = ?", (user_md5,))
-    user = cursor.fetchone()
-    
-    if not user:
-        return redirect("/login?NotFound")
-
-    advancements = json.loads(user["advancements"])
-    
-    # Check if advancement is already claimed
-    if advancement_id in advancements:
-        return redirect(f"/advancements/{user_md5}?error=Advancement already claimed.")
-
-    # Add advancement to user's advancements
-    advancements.append(advancement_id)
-    
-    # Update user's advancements in database
-    cursor.execute("UPDATE USERS SET advancements = ? WHERE user_md5 = ?", (json.dumps(advancements), user_md5))
-    conn.commit()
-    conn.close()
-
-    return redirect(f"/advancements/{user_md5}")
 
 
 # admin routes
