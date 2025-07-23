@@ -159,12 +159,12 @@
             "bg": "NONE"
         },
         "-1": {
-            "id": "NONE",
-            "bg": "NONE"
+            "id": "3",
+            "bg": "verti"
         },
         "0": {
             "id": "1",
-            "bg": "half left"
+            "bg": "tl angle"
         },
         "1": {
             "id": "NONE",

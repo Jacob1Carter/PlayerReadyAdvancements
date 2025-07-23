@@ -18,6 +18,10 @@
                 </div>
                 <img src="{{ url_for('static', filename='images/misc/' + 'name-right.png' ) }}" class="advancement-detail-name-side side-right">
             </div>
+            <form method="POST" action="/advancement/{{ advancement.id }}/{{ user_id }}/claim" class="advancement-detail-form">
+                <input type="hidden" name="advancement_id" value="{{ advancement.id }}">
+                <button type="submit" class="advancement-detail-button">Claim Advancement</button>
+            </form>
             <div class="advancement-detail-description">
                 <div class="advancement-detail-description-side desc-border-top">
                     <div class="pixel-top-left"></div>
@@ -32,7 +36,6 @@
                     <div class="line-bottom"></div>
                     <div class="pixel-bottom-right"></div>
                 </div>
-                
             </div>
         </div>
         
